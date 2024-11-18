@@ -3,15 +3,22 @@ import React, { useState } from 'react';
 import ProductList from './ProductList';
 import './App.css';
 import AboutUs from './AboutUs';
+import { addItem } from './CartSlice';
 
 function App() {
   
   const [showProductList, setShowProductList] = useState(false);
-
+  const [addedToCart, setAddedToCart] = useState({});
   const handleGetStartedClick = () => {
     setShowProductList(true);
   };
-
+  const handleAddToCart = (product) => {
+    dispatch(addItem(product));
+    setAddedToCart((prevState) => ({
+        ...prevState,
+        [product.name]: true, //set the product as key and value to show it's been added
+    }))
+  }
   return (
     <div className="app-container">
       <div className={`landing-page ${showProductList ? 'fade-out' : ''}`}>
