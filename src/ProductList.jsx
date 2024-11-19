@@ -1,10 +1,17 @@
 import React, { useState,useEffect } from 'react';
 import './ProductList.css'
 import CartItem from './CartItem';
+import { addItem } from './CartSlice';
+import { useDispatch, useSelector } from 'react-redux';
 function ProductList() {
     const [showCart, setShowCart] = useState(false); 
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
-
+    const [cart, setCart] = useState([]);
+    const [totalItems, setTotalItems] = useState(0);
+    const cartItems = useSelector(state => state.cart.items);
+    const dispatch = useDispatch();
+    console.log(cartItems);
+    
     const plantsArray = [
         {
             category: "Air Purifying Plants",
@@ -246,7 +253,18 @@ const handlePlantsClick = (e) => {
     e.preventDefault();
     setShowCart(false);
   };
-  //
+
+  const handleAddToCart = (selection) => {
+    dispatch(addItem(selection));
+    
+    setCart((inCart) => ({
+        ...inCart,
+        [selection.name]: true, // Set the product name as key and value as true to indicate it's added to cart
+       }));
+       setTotalItems(inCart => inCart+1);  // Increment the total items count
+   };
+  }
+  //added comment so window would stay open
     return (
         <div>
              <div className="navbar" style={styleObj}>
