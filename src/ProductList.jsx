@@ -261,7 +261,6 @@ const handlePlantsClick = (e) => {
        }));
        setTotalItems(inCart => inCart+1);  // Increment the total items count
    };
-  }
   //added comment so window would stay open
     return (
         <div>
@@ -306,6 +305,6 @@ const handlePlantsClick = (e) => {
 )}
     </div>
     );
-
+}
 
 export default ProductList;
