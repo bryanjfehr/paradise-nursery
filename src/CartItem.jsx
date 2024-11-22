@@ -6,14 +6,14 @@ import './CartItem.css';
 const CartItem = ({ onContinueShopping }) => {
   const cart = useSelector(state => state.cart.items);
   const dispatch = useDispatch();
+  const totalAmount = useSelector(state => state.cart.totalQuantity);
+  const parsedInt = (stringAmount) => {
+    return parseInt(stringAmount.replace('$', ''), 10);
+  };
   const calculateTotalAmount = () => {
-    let totalCost = 0;
-    if (cart) {
-        cart.forEach((item) => {
-            totalCost += item.cost * item.quantity;
-        });
-    }
-    return totalCost;
+    return cart.reduce((total, item) => {
+      return total + (item.quantity * parsedInt(item.cost));
+    }, 0);
   };
 
   const handleContinueShopping = (e) => {
@@ -25,14 +25,14 @@ const CartItem = ({ onContinueShopping }) => {
   };
 
   const handleIncrement = (item) => {
-    dispatch(updateQuantity(item, 1));
+    dispatch(updateQuantity({ name: item.name, quantity: item.quantity + 1 }));
   };
 
   const handleDecrement = (item) => {
-    if(item.quantity == 1) {
-        handleRemove(item);
+    if (item.quantity > 1) {
+      dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
     } else {
-        dispatch(updateQuantity(item, -1));
+      handleRemove(item); 
     }
   };
 
@@ -42,11 +42,9 @@ const CartItem = ({ onContinueShopping }) => {
 
   // Calculate total cost based on quantity for an item
   const calculateTotalCost = (item) => {
-    let itemCost = 0;
-    if (item.quantity > 0) {
-        itemCost = item.cost * item.quantity;
-    }
-    return itemCost;
+    return cart.reduce((total, item) => {
+      return total + (item.quantity * convertCostToInt(item.cost));
+    }, 0);
   };
 
   return (
