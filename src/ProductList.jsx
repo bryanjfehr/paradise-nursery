@@ -9,7 +9,6 @@ function ProductList() {
     const [addedToCart, setAddedToCart] = useState({});
     const totalQuantity = useSelector(state => state.cart.totalQuantity);
     const dispatch = useDispatch();
-    console.log(cartItems);
     const plantsArray = [
         {
             category: "Air Purifying Plants",
